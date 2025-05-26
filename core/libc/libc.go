@@ -55,7 +55,22 @@ func TypeToString(type0 uint16) string {
 	}
 }
 
-// Getutent - extern struct utmp *getutent (void) __THROW;
+// CGoString - конвертировать строку в go из массива фиксированной длинны.
+// Отдаёт минимальную строку из двух вариантов: \0 терминированная строка,
+// или ограниченная по длинне.
+func CGoString(cstr *C.char, max C.int) string {
+	str0 := C.GoStringN(cstr, max)
+	l0 := len(str0)
+	str1 := C.GoString(cstr)
+	l1 := len(str1)
+
+	if l0 < l1 {
+		return str0
+	}
+	return str1
+}
+
+// Getutent0 - extern struct utmp *getutent (void) __THROW;
 func Getutent0() []*UTMP {
 	result := make([]*UTMP, 0)
 	for {
@@ -65,10 +80,10 @@ func Getutent0() []*UTMP {
 			break
 		}
 
-		line := C.GoStringN(&utmp0.ut_line[0], C.UT_LINESIZE)
-		id := C.GoStringN(&utmp0.ut_id[0], 4)
-		user := C.GoStringN(&utmp0.ut_user[0], C.UT_NAMESIZE)
-		host := C.GoStringN(&utmp0.ut_host[0], C.UT_HOSTSIZE)
+		line := CGoString(&utmp0.ut_line[0], C.UT_LINESIZE)
+		id := CGoString(&utmp0.ut_id[0], 4)
+		user := CGoString(&utmp0.ut_user[0], C.UT_NAMESIZE)
+		host := CGoString(&utmp0.ut_host[0], C.UT_HOSTSIZE)
 
 		exit := ExitStatus{
 			Termination: int16(utmp0.ut_exit.e_termination),
