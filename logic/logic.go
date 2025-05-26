@@ -25,9 +25,6 @@ type Context struct {
 func DoRun(ctx *Context) error {
 	now := time.Now()
 
-	pid := os.Getpid()
-	log.Printf("DoRun, pid = %d, mins = %d, days = %d, verbose = %v, now = %v\n", pid, ctx.Mins, ctx.Days, ctx.Verbose, now)
-
 	before := now.Add(-1 * 24 * time.Hour * 7) // 7 days before
 	if ctx.Mins > 0 {
 		before = now.Add(-1 * time.Minute * time.Duration(ctx.Mins))
@@ -37,8 +34,11 @@ func DoRun(ctx *Context) error {
 	}
 
 	utmps := libc.Getutent0()
-
 	l0 := len(utmps)
+
+	pid := os.Getpid()
+	log.Printf("DoRun, pid = %d, mins = %d, days = %d, verbose = %v, now = %v, before = %v\n", pid, ctx.Mins, ctx.Days, ctx.Verbose, now, before)
+
 	count := 0
 	for i := 0; i < l0; i++ {
 		utp0 := utmps[i]
