@@ -3,8 +3,20 @@ package libc
 // #include <utmp.h>
 import "C"
 import (
+	"fmt"
 	"time"
 	"unsafe"
+)
+
+const (
+	// InitProcess - 5, Process spawned by the init process
+	InitProcess = uint16(C.INIT_PROCESS)
+	// LoginProcess - 6, Session leader of a logged in user
+	LoginProcess = uint16(C.LOGIN_PROCESS)
+	// UserProcess - 7, Normal process
+	UserProcess = uint16(C.USER_PROCESS)
+	// DeadProcess - 8, Terminated process
+	DeadProcess = uint16(C.DEAD_PROCESS)
 )
 
 type ExitStatus struct {
@@ -26,6 +38,21 @@ type UTMP struct {
 
 	// Golang fields
 	Time time.Time
+}
+
+func TypeToString(type0 uint16) string {
+	switch type0 {
+	case InitProcess:
+		return "init"
+	case LoginProcess:
+		return "login"
+	case UserProcess:
+		return "user"
+	case DeadProcess:
+		return "dead"
+	default:
+		return fmt.Sprintf("%d", type0)
+	}
 }
 
 // Getutent - extern struct utmp *getutent (void) __THROW;
