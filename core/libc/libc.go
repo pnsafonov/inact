@@ -34,7 +34,7 @@ type UTMP struct {
 	Exit    ExitStatus
 	Session int32
 	Sec     int32
-	USec    int32
+	USec    int32 // microseconds
 
 	// Golang fields
 	Time time.Time
