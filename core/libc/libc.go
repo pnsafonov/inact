@@ -9,6 +9,18 @@ import (
 )
 
 const (
+	// Empty - 0, No valid user accounting information
+	Empty = uint16(C.EMPTY)
+
+	// RunLvl - 1, The system's runlevel
+	RunLvl = uint16(C.RUN_LVL)
+	// BootTime - 2, Time of system boot
+	BootTime = uint16(C.BOOT_TIME)
+	// NewTime - 3, Time after system clock changed
+	NewTime = uint16(C.NEW_TIME)
+	// OldTime - 4, Time when system clock changed
+	OldTime = uint16(C.OLD_TIME)
+
 	// InitProcess - 5, Process spawned by the init process
 	InitProcess = uint16(C.INIT_PROCESS)
 	// LoginProcess - 6, Session leader of a logged in user
@@ -42,6 +54,16 @@ type UTMP struct {
 
 func TypeToString(type0 uint16) string {
 	switch type0 {
+	case Empty:
+		return "empty"
+	case RunLvl:
+		return "system"
+	case BootTime:
+		return "boot"
+	case NewTime:
+		return "new_time"
+	case OldTime:
+		return "old_time"
 	case InitProcess:
 		return "init"
 	case LoginProcess:

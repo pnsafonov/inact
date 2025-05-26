@@ -38,17 +38,18 @@ func DoRun(ctx *Context) error {
 	for i := 0; i < l0; i++ {
 		utp0 := utmps[i]
 
-		if ctx.Verbose {
-			printUTMP(utp0, i)
+		if utp0.Type != libc.UserProcess && utp0.Type != libc.DeadProcess {
+			printUTMP(ctx.Verbose, utp0, i, "0 by type")
+			continue
 		}
 
-		if utp0.Type != libc.UserProcess && utp0.Type != libc.DeadProcess {
-			continue
-		}
 		if utp0.Time.Before(before) {
+			printUTMP(ctx.Verbose, utp0, i, "0 by time")
 			continue
 		}
+
 		count++
+		printUTMP(ctx.Verbose, utp0, i, "1")
 	}
 
 	log.Printf("DoRun, recent logins count = %d\n", count)
@@ -85,8 +86,11 @@ func DoRun(ctx *Context) error {
 	return nil
 }
 
-func printUTMP(utp0 *libc.UTMP, i int) {
-	log.Printf("i = %d, ut_type = %s, tv_sec = %v, ut_id = %s, ut_pid = %d, ut_user = %s, ut_line = %s, ut_host = %s\n",
+func printUTMP(verbose bool, utp0 *libc.UTMP, i int, msg string) {
+	if !verbose {
+		return
+	}
+	log.Printf("i = %d, ut_type = %s, tv_sec = %v, ut_id = %s, ut_pid = %d, ut_user = %s, ut_line = %s, ut_host = %s, is_user = %s\n",
 		i,
 		libc.TypeToString(utp0.Type),
 		utp0.Time,
@@ -95,5 +99,6 @@ func printUTMP(utp0 *libc.UTMP, i int) {
 		utp0.User,
 		utp0.Line,
 		utp0.Host,
+		msg,
 	)
 }
