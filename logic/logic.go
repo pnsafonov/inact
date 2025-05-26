@@ -64,19 +64,19 @@ func DoRun(ctx *Context) error {
 	}
 
 	var args []string
-	//if runtime.GOOS == "freebsd" {
-	//	args = []string{"-p", "now"}
-	//} else { // linux
-	//	args = []string{"-h", "now"}
-	//}
-	//cmd := exec.Command("shutdown", args...)
-
 	if runtime.GOOS == "freebsd" {
-		args = []string{"-alh"}
+		args = []string{"-p", "now"}
 	} else { // linux
-		args = []string{"-h"}
+		args = []string{"-h", "now"}
 	}
-	cmd := exec.Command("ls", args...)
+	cmd := exec.Command("shutdown", args...)
+
+	//if runtime.GOOS == "freebsd" {
+	//	args = []string{"-alh"}
+	//} else { // linux
+	//	args = []string{"-h"}
+	//}
+	//cmd := exec.Command("ls", args...)
 
 	log.Printf("DoRun, do shutdown\n")
 	if errors.Is(cmd.Err, exec.ErrDot) {
