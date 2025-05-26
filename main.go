@@ -16,7 +16,7 @@ func doMain(args []string) {
 
 	days0 := "7"
 	mins0 := "0"
-	verbose := false
+	verbose := true
 	l0 := len(args)
 	for i := 1; i < l0; i++ {
 		arg := args[i]
@@ -50,6 +50,11 @@ func doMain(args []string) {
 		case "--verbose":
 			{
 				verbose = true
+				continue
+			}
+		case "--no-verbose":
+			{
+				verbose = false
 				continue
 			}
 		}
@@ -87,7 +92,8 @@ inact checks last logins and do shutdown if no recent logins
 
     -d, --days <days>     days count before current day to check for logins, default 7
     -m, --mins <mins>     mins count before current time to check for logins
-        --verbose         print information about last logins
+        --verbose               print information about last logins
+        --no-verbose      don't print information about last logins
 
     -h, --help            display this help and exit
     -v, --version         output version information and exit`

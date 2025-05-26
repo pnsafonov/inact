@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/pnsafonov/inact/core/libc"
 	"log"
+	"os"
 	"os/exec"
 	"runtime"
 	"time"
@@ -23,6 +24,10 @@ type Context struct {
 
 func DoRun(ctx *Context) error {
 	now := time.Now()
+
+	pid := os.Getpid()
+	log.Printf("DoRun, pid = %d, mins = %d, days = %d, verbose = %v, now = %v\n", pid, ctx.Mins, ctx.Days, ctx.Verbose, now)
+
 	before := now.Add(-1 * 24 * time.Hour * 7) // 7 days before
 	if ctx.Mins > 0 {
 		before = now.Add(-1 * time.Minute * time.Duration(ctx.Mins))
