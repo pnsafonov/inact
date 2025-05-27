@@ -2,10 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/pnsafonov/inact/core/utils/git_utils"
 	"github.com/pnsafonov/inact/logic"
 	"os"
 	"strconv"
+)
+
+var (
+	version = dev
+	commit  = "none"
+	date    = "unknown"
+	builtBy = "manual"
 )
 
 func main() {
@@ -103,7 +109,7 @@ inact checks last logins and do shutdown if no recent logins
 }
 
 func printVersion() {
-	gitHash := git_utils.GetGitHashShort()
-	fmt.Printf("inact %s %s\n", logic.Version, gitHash)
+	version0, gitHash := GetVersion0()
+	fmt.Printf("inact version %s %s\n", version0, gitHash)
 	os.Exit(0)
 }
