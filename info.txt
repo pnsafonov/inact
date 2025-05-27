@@ -1,3 +1,5 @@
 
-go get -u modernc.org/libc
-
+git tag v1.0.1
+git push origin tag v1.0.1
+git tag -d v1.0.1
+git push --delete origin v1.0.1
