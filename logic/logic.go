@@ -58,12 +58,15 @@ func DoRun(ctx *Context) error {
 	}
 
 	var args []string
+	envs := []string{"PATH=/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/sbin"}
+
 	if runtime.GOOS == "freebsd" {
 		args = []string{"-p", "now"}
 	} else { // linux
 		args = []string{"-h", "now"}
 	}
 	cmd := exec.Command("shutdown", args...)
+	cmd.Env = envs
 
 	//if runtime.GOOS == "freebsd" {
 	//	args = []string{"-alh"}
@@ -71,6 +74,7 @@ func DoRun(ctx *Context) error {
 	//	args = []string{"-h"}
 	//}
 	//cmd := exec.Command("ls", args...)
+	//cmd.Env = envs
 
 	log.Printf("DoRun, do shutdown\n")
 	if errors.Is(cmd.Err, exec.ErrDot) {
