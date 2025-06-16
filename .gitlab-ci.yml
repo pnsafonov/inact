@@ -1,0 +1,39 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'master'
+
+variables:
+  DEPLOY_DIR: "/var/www/repo"
+
+cache:
+    key: "$CI_BUILD_STAGE"
+    paths:
+      - .m2
+    
+stages:
+  - build
+  - deploy
+
+build-job:
+  tags:
+    - benchman
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - make build_freebsd
+    - echo "Installation completed"
+  artifacts:
+    paths:
+     - bin/inact_freebsd
+
+deploy-job:
+  tags:
+    - benchman
+  stage: deploy
+  script:
+    - echo "Begin deploy!"
+    - pwd
+    - cp bin/inact_freebsd  $DEPLOY_DIR
+    - echo "End deploy!"
