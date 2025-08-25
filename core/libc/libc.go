@@ -1,6 +1,6 @@
 package libc
 
-// #include <utmp.h>
+// #include <utmpx.h>
 import "C"
 import (
 	"fmt"
@@ -12,8 +12,10 @@ const (
 	// Empty - 0, No valid user accounting information
 	Empty = uint16(C.EMPTY)
 
+	// #ifdef __USE_GNU
 	// RunLvl - 1, The system's runlevel
-	RunLvl = uint16(C.RUN_LVL)
+	// RunLvl = uint16(C.RUN_LVL)
+
 	// BootTime - 2, Time of system boot
 	BootTime = uint16(C.BOOT_TIME)
 	// NewTime - 3, Time after system clock changed
@@ -56,8 +58,8 @@ func TypeToString(type0 uint16) string {
 	switch type0 {
 	case Empty:
 		return "empty"
-	case RunLvl:
-		return "system"
+	//case RunLvl:
+	//	return "system"
 	case BootTime:
 		return "boot"
 	case NewTime:
@@ -92,24 +94,24 @@ func CGoString(cstr *C.char, max C.int) string {
 	return str1
 }
 
-// Getutent0 - extern struct utmp *getutent (void) __THROW;
+// Getutent0 - struct utmpx *getutxent(void);
 func Getutent0() []*UTMP {
 	result := make([]*UTMP, 0)
 	for {
-		utmp0 := C.getutent()
+		utmp0 := C.getutxent()
 		utmp1 := uintptr(unsafe.Pointer(utmp0))
 		if utmp1 == 0 {
 			break
 		}
 
-		line := CGoString(&utmp0.ut_line[0], C.UT_LINESIZE)
+		line := CGoString(&utmp0.ut_line[0], C.int(unsafe.Sizeof(utmp0.ut_line)))
 		id := CGoString(&utmp0.ut_id[0], 4)
-		user := CGoString(&utmp0.ut_user[0], C.UT_NAMESIZE)
-		host := CGoString(&utmp0.ut_host[0], C.UT_HOSTSIZE)
+		user := CGoString(&utmp0.ut_user[0], C.int(unsafe.Sizeof(utmp0.ut_user)))
+		host := CGoString(&utmp0.ut_host[0], C.int(unsafe.Sizeof(utmp0.ut_host)))
 
 		exit := ExitStatus{
-			Termination: int16(utmp0.ut_exit.e_termination),
-			Exit:        int16(utmp0.ut_exit.e_exit),
+			Termination: int16(utmp0.ut_exit.__e_termination),
+			Exit:        int16(utmp0.ut_exit.__e_exit),
 		}
 		utmp2 := &UTMP{
 			Type:    uint16(utmp0.ut_type),
