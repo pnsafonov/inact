@@ -109,21 +109,21 @@ func Getutent0() []*UTMP {
 		user := CGoString(&utmp0.ut_user[0], C.int(unsafe.Sizeof(utmp0.ut_user)))
 		host := CGoString(&utmp0.ut_host[0], C.int(unsafe.Sizeof(utmp0.ut_host)))
 
-		exit := ExitStatus{
-			Termination: int16(utmp0.ut_exit.__e_termination),
-			Exit:        int16(utmp0.ut_exit.__e_exit),
-		}
+		//exit := ExitStatus{
+		//	Termination: int16(utmp0.ut_exit.__e_termination),
+		//	Exit:        int16(utmp0.ut_exit.__e_exit),
+		//}
 		utmp2 := &UTMP{
-			Type:    uint16(utmp0.ut_type),
-			Pid:     int32(utmp0.ut_pid),
-			Line:    line,
-			Id:      id,
-			User:    user,
-			Host:    host,
-			Exit:    exit,
-			Session: int32(utmp0.ut_session),
-			Sec:     int32(utmp0.ut_tv.tv_sec),
-			USec:    int32(utmp0.ut_tv.tv_usec),
+			Type: uint16(utmp0.ut_type),
+			Pid:  int32(utmp0.ut_pid),
+			Line: line,
+			Id:   id,
+			User: user,
+			Host: host,
+			//Exit:    exit,
+			//Session: int32(utmp0.ut_session),
+			Sec:  int32(utmp0.ut_tv.tv_sec),
+			USec: int32(utmp0.ut_tv.tv_usec),
 		}
 
 		time0 := time.Unix(int64(utmp2.Sec), int64(1000*utmp2.USec))
