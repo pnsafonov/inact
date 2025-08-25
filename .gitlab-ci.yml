@@ -37,5 +37,5 @@ deploy-job:
     - pwd
     - echo "CI_BUILDS_DIR  = $CI_BUILDS_DIR"
     - echo "CI_PROJECT_DIR = $CI_PROJECT_DIR"
-    - tar czfP $DEPLOY_DIR/inact_freebsd.tar.gz $CI_PROJECT_DIR/bin/freebsd/inact
+    - tar -C $CI_PROJECT_DIR/bin/freebsd -czf $DEPLOY_DIR/inact_freebsd.tar.gz ./inact
     - echo "End deploy!"
