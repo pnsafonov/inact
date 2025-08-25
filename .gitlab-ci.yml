@@ -26,7 +26,7 @@ build-job:
     - echo "Installation completed"
   artifacts:
     paths:
-     - bin/inact_freebsd
+     - bin/freebsd/inact
 
 deploy-job:
   tags:
@@ -35,5 +35,7 @@ deploy-job:
   script:
     - echo "Begin deploy!"
     - pwd
-    - cp bin/inact_freebsd  $DEPLOY_DIR
+    - echo "CI_BUILDS_DIR  = $CI_BUILDS_DIR"
+    - echo "CI_PROJECT_DIR = $CI_PROJECT_DIR"
+    - tar czfP $DEPLOY_DIR/inact_freebsd.tar.gz $CI_PROJECT_DIR/bin/freebsd/inact
     - echo "End deploy!"

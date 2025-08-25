@@ -13,11 +13,11 @@ build_cross: build_linux build_freebsd
 
 build_linux:
 	GOOS=linux \
-	go build -v -o ./bin/inact_linux github.com/pnsafonov/inact
+	go build -v -o ./bin/linux/inact github.com/pnsafonov/inact
 
 build_freebsd:
 	GOOS=freebsd \
-	go build -v -o ./bin/inact_freebsd github.com/pnsafonov/inact
+	go build -v -o ./bin/freebsd/inact github.com/pnsafonov/inact
 
 test:
 	go test -count=1 ./...
