@@ -13,10 +13,12 @@ build_cross: build_linux build_freebsd
 
 build_linux:
 	GOOS=linux \
+	CGO_ENABLED=1 \
 	go build -v -o ./bin/linux/inact github.com/pnsafonov/inact
 
 build_freebsd:
 	GOOS=freebsd \
+	CGO_ENABLED=1 \
 	go build -v -o ./bin/freebsd/inact github.com/pnsafonov/inact
 
 test:
