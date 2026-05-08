@@ -23,12 +23,12 @@ build-job:
   script:
     - echo "Compiling the code..."
     - make build_freebsd
-    - make build_linux
+#    - make build_linux
     - echo "Installation completed"
   artifacts:
     paths:
      - bin/freebsd/inact
-     - bin/linux/inact
+#     - bin/linux/inact
 
 deploy-job:
   tags:
@@ -40,5 +40,5 @@ deploy-job:
     - echo "CI_BUILDS_DIR  = $CI_BUILDS_DIR"
     - echo "CI_PROJECT_DIR = $CI_PROJECT_DIR"
     - tar -C $CI_PROJECT_DIR/bin/freebsd -czf $DEPLOY_DIR/inact_freebsd.tar.gz ./inact
-    - tar -C $CI_PROJECT_DIR/bin/linux -czf $DEPLOY_DIR/inact_linux.tar.gz ./inact
+#    - tar -C $CI_PROJECT_DIR/bin/linux -czf $DEPLOY_DIR/inact_linux.tar.gz ./inact
     - echo "End deploy!"
